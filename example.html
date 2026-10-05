@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>json-roadmap · example</title>
+    <style>
+      .toolbar {
+        max-width: 95vw;
+        margin: 0 auto;
+        padding: 15px 15px 0;
+        display: flex;
+        gap: 10px ;
+        align-items: center;
+      }
+      .toolbar select {
+        font: inherit;
+        padding: 6px 10px;
+        border-radius: 6px;
+        border: 1px solid var(--rm-border, #cbd5e1);
+        background: var(--rm-panel-bg, #ffffff);
+        color: var(--rm-text, #0f172a);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toolbar">
+      <select id="theme">
+        <option value="dark">dark</option>
+        <option value="light">light</option>
+      </select>
+
+      <select id="lang">
+        <option value="en">English</option>
+        <option value="chs">简体中文</option>
+        <option value="cht">繁體中文</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+      </select>
+    </div>
+
+    <div id="roadmap"></div>
+
+    <script type="application/json" id="roadmap-data">
+      {
+        "theme": "dark",
+        "language": "en",
+
+        "columns": [
+          "2026 Q1",
+          "2026 Q2",
+          "2026 Q3",
+          "2026 Q4"
+        ],
+
+        "projects": [
+          {
+            "name": "projects 1",
+            "responsible": "david / DevOps",
+            "issue": "https://github.com/your-org/infra/issues/101",
+            "cells": {
+              "2026 Q1": {
+                "description": "description 1",
+                "details": ["details1", "details2"],
+                "progress": "100%",
+                "metrics": ["metrics1", "metrics2"],
+                "objectives": ["objectives1"]
+              },
+              "2026 Q2": {
+                "description": "description 2",
+                "details": ["details1", "details2"],
+                "progress": "100%",
+                "risks": ["risks1", "risks2"],
+                "metrics": ["metrics1"]
+              },
+              "2026 Q3": {
+                "description": "description 3",
+                "details": ["details1", "details2"],
+                "progress": "50%",
+                "objectives": ["objectives1", "objectives2"],
+                "dependencies": ["dependencies1"]
+              }
+            }
+          },
+          {
+            "name": "projects 2",
+            "responsible": "judy / DevOps",
+            "issue": "https://github.com/your-org/infra/issues/102",
+            "cells": {
+              "2026 Q1": {
+                "description": "description 1",
+                "details": ["details1", "details2"],
+                "metrics": ["metrics1"]
+              },
+              "2026 Q2": {
+                "description": "description 2",
+                "details": ["details1", "details2"],
+                "risks": ["risks1"]
+              },
+              "2026 Q3": {
+                "description": "description 3",
+                "details": ["details1", "details2"],
+                "objectives": ["objectives1", "objectives2"]
+              },
+              "2026 Q4": {
+                "description": "description 4",
+                "details": ["details1", "details2"],
+                "risks": ["risks1"],
+                "metrics": ["metrics1", "metrics2"],
+                "dependencies": ["dependencies1"]
+              }
+            }
+          }
+        ]
+      }
+    </script>
+
+    <script src="./roadmap.js"></script>
+
+    <script>
+      var themeSelect = document.getElementById('theme');
+      var langSelect = document.getElementById('lang');
+
+      var DATA = null;
+      try {
+        DATA = Roadmap.readJSON('#roadmap-data');
+      } catch (e) {}
+
+      if (DATA) {
+        themeSelect.value = DATA.theme || 'dark';
+        langSelect.value = DATA.language || 'en';
+      }
+
+      function render() {
+        Roadmap.mount('#roadmap', '#roadmap-data', {
+          theme: themeSelect.value,
+          language: langSelect.value,
+        });
+      }
+
+      themeSelect.addEventListener('change', render);
+      langSelect.addEventListener('change', render);
+
+      render();
+    </script>
+  </body>
+</html>
